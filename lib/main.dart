@@ -36,12 +36,20 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final appState = context.watch<MyAppState>();
 
-    return Scaffold(
-      body: Column(
-        children: [
-          const Text('A random idea:'),
-          Text(appState.current.asLowerCase),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            const Text('A random AYY LMAO idea:'),
+            Text(appState.current.asLowerCase),
+            ElevatedButton(
+              onPressed: () {
+                print('Button pressed');
+              },
+              child: const Text('Next'),
+            ),
+          ],
+        ),
       ),
     );
   }
