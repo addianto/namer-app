@@ -45,8 +45,9 @@ class MyHomePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('A random AYY LMAO idea:'),
+            const Text('A random idea:'),
             BigCard(pair: pair),
             ElevatedButton(
               onPressed: appState.getNext,
