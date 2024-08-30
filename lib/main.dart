@@ -1,5 +1,5 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:namer_app/generator_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -25,94 +25,65 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyAppState extends ChangeNotifier {
-  WordPair current = WordPair.random();
-  final Set<WordPair> favorites = <WordPair>{};
-
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
-    } else {
-      favorites.add(current);
-    }
-    notifyListeners();
-  }
-}
-
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final appState = context.watch<MyAppState>();
-    final pair = appState.current;
-    final icon = appState.favorites.contains(pair)
-        ? const Icon(Icons.favorite)
-        : const Icon(Icons.favorite_border);
-
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              BigCard(pair: pair),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: appState.toggleFavorite,
-                    label: const Text('Like'),
-                    icon: icon,
-                  ),
-                  const SizedBox(width: 8),
-                  ElevatedButton(
-                    onPressed: appState.getNext,
-                    child: const Text('Next'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class BigCard extends StatelessWidget {
-  const BigCard({
-    required this.pair,
-    super.key,
-  });
-
-  final WordPair pair;
+class _MyHomePageState extends State<MyHomePage> {
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-      fontWeight: FontWeight.bold,
-    );
+    Widget currentPage;
 
-    return Card(
-      color: theme.colorScheme.primary,
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Text(
-          pair.asLowerCase,
-          style: style,
-          semanticsLabel: '${pair.first} ${pair.second}',
-        ),
-      ),
+    switch (selectedIndex) {
+      case 0:
+        currentPage = const GeneratorPage();
+      case 1:
+        currentPage = const Placeholder();
+      default:
+        throw UnimplementedError('No widget for $selectedIndex');
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Scaffold(
+          body: Row(
+            children: [
+              SafeArea(
+                child: NavigationRail(
+                  extended: constraints.maxWidth >= 600,
+                  destinations: const [
+                    NavigationRailDestination(
+                      icon: Icon(Icons.home),
+                      label: Text('Home'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.favorite),
+                      label: Text('Favorites'),
+                    ),
+                  ],
+                  selectedIndex: selectedIndex,
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      selectedIndex = value;
+                    });
+                  },
+                ),
+              ),
+              Expanded(
+                child: ColoredBox(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  child: currentPage,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
