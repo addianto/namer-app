@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:namer_app/favorites_page.dart';
 import 'package:namer_app/generator_page.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0:
         currentPage = const GeneratorPage();
       case 1:
-        currentPage = const Placeholder();
+        currentPage = const FavoritesPage();
       default:
         throw UnimplementedError('No widget for $selectedIndex');
     }
