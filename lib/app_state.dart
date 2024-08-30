@@ -2,19 +2,27 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
 class MyAppState extends ChangeNotifier {
-  WordPair current = WordPair.random();
-  final Set<WordPair> favorites = <WordPair>{};
+  MyAppState()
+      : _current = WordPair.random(),
+        _favorites = {};
+
+  WordPair _current;
+  final Set<WordPair> _favorites;
+
+  WordPair get current => _current;
+
+  Set<WordPair> get favorites => _favorites;
 
   void getNext() {
-    current = WordPair.random();
+    _current = WordPair.random();
     notifyListeners();
   }
 
   void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
+    if (_favorites.contains(_current)) {
+      _favorites.remove(_current);
     } else {
-      favorites.add(current);
+      _favorites.add(_current);
     }
     notifyListeners();
   }
