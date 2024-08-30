@@ -44,16 +44,18 @@ class MyHomePage extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('A random idea:'),
-            BigCard(pair: pair),
-            ElevatedButton(
-              onPressed: appState.getNext,
-              child: const Text('Next'),
-            ),
-          ],
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BigCard(pair: pair),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: appState.getNext,
+                child: const Text('Next'),
+              ),
+            ],
+          ),
         ),
       ),
     );
