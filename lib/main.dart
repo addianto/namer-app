@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/app_state.dart';
-import 'package:namer_app/favorites_page.dart';
-import 'package:namer_app/generator_page.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:namer_app/wordpair/cubit/wordpair_cubit.dart';
+import 'package:namer_app/wordpair/view/view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +12,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+    return BlocProvider(
+      create: (_) => WordPairCubit(),
       child: MaterialApp(
         title: 'Namer App',
         theme: ThemeData(

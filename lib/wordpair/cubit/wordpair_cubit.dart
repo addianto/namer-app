@@ -23,4 +23,12 @@ class WordPairCubit extends Cubit<WordPairState> {
     final newFavorites = List<WordPair>.from(state.favorites)..remove(pair);
     emit(WordPairUpdated(current: state.current, favorites: newFavorites));
   }
+
+  void toggleFavorite() {
+    if (state.favorites.contains(state.current)) {
+      removeFromFavorites(state.current);
+    } else {
+      addToFavorites();
+    }
+  }
 }
