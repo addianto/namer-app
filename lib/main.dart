@@ -37,55 +37,55 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     Widget currentPage;
 
-    switch (selectedIndex) {
-      case GeneratorPageNavigation.NUMBER:
-        currentPage = const GeneratorPage();
-      case FavoritePageNavigation.NUMBER:
-        currentPage = const FavoritesPage();
-      default:
-        throw UnimplementedError('No widget for $selectedIndex');
-    }
+    return BlocBuilder<NavigationCubit, NavigationState>(
+      builder: (context, state) {
+        switch (state.pageNumber) {
+          case GeneratorPageNavigation.NUMBER:
+            currentPage = const GeneratorPage();
+          case FavoritePageNavigation.NUMBER:
+            currentPage = const FavoritesPage();
+          default:
+            throw UnimplementedError('No widget for ${state.pageNumber}');
+        }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scaffold(
-          body: Row(
-            children: [
-              SafeArea(
-                child: NavigationRail(
-                  extended: constraints.maxWidth >= 600,
-                  destinations: const [
-                    NavigationRailDestination(
-                      icon: Icon(Icons.home),
-                      label: Text('Home'),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return Scaffold(
+              body: Row(
+                children: [
+                  SafeArea(
+                    child: NavigationRail(
+                      extended: constraints.maxWidth >= 600,
+                      destinations: const [
+                        NavigationRailDestination(
+                          icon: Icon(Icons.home),
+                          label: Text('Home'),
+                        ),
+                        NavigationRailDestination(
+                          icon: Icon(Icons.favorite),
+                          label: Text('Favorites'),
+                        ),
+                      ],
+                      selectedIndex: state.pageNumber,
+                      onDestinationSelected: (value) {
+                        // TODO
+                      },
                     ),
-                    NavigationRailDestination(
-                      icon: Icon(Icons.favorite),
-                      label: Text('Favorites'),
+                  ),
+                  Expanded(
+                    child: ColoredBox(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      child: currentPage,
                     ),
-                  ],
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      selectedIndex = value;
-                    });
-                  },
-                ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: ColoredBox(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: currentPage,
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
