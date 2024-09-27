@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:namer_app/wordpair/cubit/wordpair_cubit.dart';
-import 'package:namer_app/wordpair/view/view.dart';
+import 'package:namer_app/navigation/navigation.dart';
+import 'package:namer_app/wordpair/wordpair.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,8 +12,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => WordPairCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => WordPairCubit()),
+        BlocProvider(create: (_) => NavigationCubit()),
+      ],
       child: MaterialApp(
         title: 'Namer App',
         theme: ThemeData(
@@ -41,9 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget currentPage;
 
     switch (selectedIndex) {
-      case 0:
+      case GeneratorPageNavigation.NUMBER:
         currentPage = const GeneratorPage();
-      case 1:
+      case FavoritePageNavigation.NUMBER:
         currentPage = const FavoritesPage();
       default:
         throw UnimplementedError('No widget for $selectedIndex');
