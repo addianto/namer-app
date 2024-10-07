@@ -73,9 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ],
                       selectedIndex: state.pageNumber,
-                      onDestinationSelected: (value) {
-                        // TODO
-                      },
+                      onDestinationSelected: (value) =>
+                          context.read<NavigationCubit>().goToPage(value),
                     ),
                   ),
                   Expanded(

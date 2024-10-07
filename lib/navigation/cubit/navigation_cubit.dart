@@ -7,4 +7,16 @@ part 'navigation_state.dart';
 
 class NavigationCubit extends Cubit<NavigationState> {
   NavigationCubit() : super(const GeneratorPageNavigation());
+
+  void goToPage(int pageNumber) {
+    switch (pageNumber) {
+      case GeneratorPageNavigation.NUMBER:
+        emit(const GeneratorPageNavigation());
+      case FavoritePageNavigation.NUMBER:
+        emit(const FavoritePageNavigation());
+      default:
+        emit(state);
+        addError('Invalid or unknown page identifier $pageNumber');
+    }
+  }
 }
