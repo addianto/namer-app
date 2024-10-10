@@ -67,5 +67,45 @@ void main() {
         isNot(contains(WordPair('foo', 'bar'))),
       ),
     );
+
+    blocTest<WordPairCubit, WordPairState>(
+      '''
+      given one favorite exists in the favorites
+      when toggleFavorite is called
+      then favorites become empty
+      ''',
+      build: () => cubit,
+      seed: () => WordPairUpdated(
+        current: WordPair('foo', 'bar'),
+        favorites: [WordPair('foo', 'bar')],
+      ),
+      act: (bloc) => cubit.toggleFavorite(),
+      expect: () => [
+        WordPairUpdated(
+          current: WordPair('foo', 'bar'),
+          favorites: const [],
+        ),
+      ],
+    );
+
+    blocTest<WordPairCubit, WordPairState>(
+      '''
+      given no favorite exists in the favorites
+      when toggleFavorite is called
+      then favorites contain one favorite
+      ''',
+      build: () => cubit,
+      seed: () => WordPairUpdated(
+        current: WordPair('foo', 'bar'),
+        favorites: const [],
+      ),
+      act: (bloc) => cubit.toggleFavorite(),
+      expect: () => [
+        WordPairUpdated(
+          current: WordPair('foo', 'bar'),
+          favorites: [WordPair('foo', 'bar')],
+        ),
+      ],
+    );
   });
 }
