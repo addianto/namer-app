@@ -10,9 +10,9 @@ class NavigationCubit extends Cubit<NavigationState> {
 
   void goToPage(int pageNumber) {
     switch (pageNumber) {
-      case GeneratorPageNavigation.NUMBER:
+      case GeneratorPageNavigation.number:
         emit(const GeneratorPageNavigation());
-      case FavoritePageNavigation.NUMBER:
+      case FavoritePageNavigation.number:
         emit(const FavoritePageNavigation());
       default:
         emit(state);

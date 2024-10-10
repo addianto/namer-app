@@ -46,9 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return BlocBuilder<NavigationCubit, NavigationState>(
       builder: (context, state) {
         switch (state.pageNumber) {
-          case GeneratorPageNavigation.NUMBER:
+          case GeneratorPageNavigation.number:
             currentPage = const GeneratorPage();
-          case FavoritePageNavigation.NUMBER:
+          case FavoritePageNavigation.number:
             currentPage = const FavoritesPage();
           default:
             throw UnimplementedError('No widget for ${state.pageNumber}');

@@ -19,21 +19,30 @@ void main() {
     });
 
     blocTest<NavigationCubit, NavigationState>(
-      'emits GeneratorPageNavigation when goToPage is called with GeneratorPageNavigation.NUMBER',
+      '''
+      emits GeneratorPageNavigation
+      when goToPage is called with GeneratorPageNavigation.NUMBER
+      ''',
       build: () => cubit,
-      act: (cubit) => cubit.goToPage(GeneratorPageNavigation.NUMBER),
+      act: (cubit) => cubit.goToPage(GeneratorPageNavigation.number),
       expect: () => [const GeneratorPageNavigation()],
     );
 
     blocTest<NavigationCubit, NavigationState>(
-      'emits FavoritePageNavigation when goToPage is called with FavoritePageNavigation.NUMBER',
+      '''
+      emits FavoritePageNavigation
+      when goToPage is called with FavoritePageNavigation.NUMBER
+      ''',
       build: () => cubit,
-      act: (cubit) => cubit.goToPage(FavoritePageNavigation.NUMBER),
+      act: (cubit) => cubit.goToPage(FavoritePageNavigation.number),
       expect: () => [const FavoritePageNavigation()],
     );
 
     blocTest<NavigationCubit, NavigationState>(
-      'stays on the same page when goToPage is called with an invalid pageNumber',
+      '''
+      stays on the same page
+      when goToPage is called with an invalid pageNumber
+      ''',
       build: () => cubit,
       act: (cubit) => cubit.goToPage(2), // Invalid page number
       expect: () => [const GeneratorPageNavigation()],

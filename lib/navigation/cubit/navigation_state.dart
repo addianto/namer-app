@@ -11,13 +11,13 @@ sealed class NavigationState extends Equatable {
 }
 
 final class GeneratorPageNavigation extends NavigationState {
-  const GeneratorPageNavigation() : super(pageNumber: NUMBER);
+  const GeneratorPageNavigation() : super(pageNumber: number);
 
-  static const int NUMBER = 0;
+  static const int number = 0;
 }
 
 final class FavoritePageNavigation extends NavigationState {
-  const FavoritePageNavigation() : super(pageNumber: NUMBER);
+  const FavoritePageNavigation() : super(pageNumber: number);
 
-  static const int NUMBER = 1;
+  static const int number = 1;
 }

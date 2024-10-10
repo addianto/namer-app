@@ -22,7 +22,8 @@ class FavoritesPage extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemCount: state.favorites.length,
-                // TODO: Figure out how to push down the InkWell wrapper to be defined inside the FavoriteItem class
+                // TODO(addianto): Figure out how to push down the InkWell
+                // wrapper to be defined inside the FavoriteItem class
                 itemBuilder: (context, index) => InkWell(
                   onTap: () => context
                       .read<WordPairCubit>()
