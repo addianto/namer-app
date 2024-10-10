@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:namer_app/app_state.dart';
-import 'package:namer_app/favorites_page.dart';
-import 'package:namer_app/generator_page.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:namer_app/namer_observer.dart';
+import 'package:namer_app/navigation/navigation.dart';
+import 'package:namer_app/wordpair/wordpair.dart';
 
 void main() {
+  Bloc.observer = const NamerObserver();
   runApp(const MyApp());
 }
 
@@ -13,8 +14,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => WordPairCubit()),
+        BlocProvider(create: (_) => NavigationCubit()),
+      ],
       child: MaterialApp(
         title: 'Namer App',
         theme: ThemeData(
@@ -35,55 +39,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     Widget currentPage;
 
-    switch (selectedIndex) {
-      case 0:
-        currentPage = const GeneratorPage();
-      case 1:
-        currentPage = const FavoritesPage();
-      default:
-        throw UnimplementedError('No widget for $selectedIndex');
-    }
+    return BlocBuilder<NavigationCubit, NavigationState>(
+      builder: (context, state) {
+        switch (state.pageNumber) {
+          case GeneratorPageNavigation.number:
+            currentPage = const GeneratorPage();
+          case FavoritePageNavigation.number:
+            currentPage = const FavoritesPage();
+          default:
+            throw UnimplementedError('No widget for ${state.pageNumber}');
+        }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scaffold(
-          body: Row(
-            children: [
-              SafeArea(
-                child: NavigationRail(
-                  extended: constraints.maxWidth >= 600,
-                  destinations: const [
-                    NavigationRailDestination(
-                      icon: Icon(Icons.home),
-                      label: Text('Home'),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return Scaffold(
+              body: Row(
+                children: [
+                  SafeArea(
+                    child: NavigationRail(
+                      extended: constraints.maxWidth >= 600,
+                      destinations: const [
+                        NavigationRailDestination(
+                          icon: Icon(Icons.home),
+                          label: Text('Home'),
+                        ),
+                        NavigationRailDestination(
+                          icon: Icon(Icons.favorite),
+                          label: Text('Favorites'),
+                        ),
+                      ],
+                      selectedIndex: state.pageNumber,
+                      onDestinationSelected: (value) =>
+                          context.read<NavigationCubit>().goToPage(value),
                     ),
-                    NavigationRailDestination(
-                      icon: Icon(Icons.favorite),
-                      label: Text('Favorites'),
+                  ),
+                  Expanded(
+                    child: ColoredBox(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      child: currentPage,
                     ),
-                  ],
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      selectedIndex = value;
-                    });
-                  },
-                ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: ColoredBox(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: currentPage,
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
