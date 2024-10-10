@@ -16,7 +16,6 @@ sealed class WordPairState extends Equatable {
 
 final class WordPairInitial extends WordPairState {
   WordPairInitial() : super(current: WordPair.random(), favorites: []);
-
 }
 
 final class WordPairUpdated extends WordPairState {

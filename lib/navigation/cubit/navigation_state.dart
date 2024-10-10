@@ -2,12 +2,12 @@ part of 'navigation_cubit.dart';
 
 @immutable
 sealed class NavigationState extends Equatable {
-  const NavigationState({ required this.pageNumber });
+  const NavigationState({required this.pageNumber});
 
   final int pageNumber;
 
   @override
-  List<Object> get props => [ pageNumber ];
+  List<Object> get props => [pageNumber];
 }
 
 final class GeneratorPageNavigation extends NavigationState {
