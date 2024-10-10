@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => WordPairCubit()),
-        BlocProvider(create: (_) => NavigationCubit()),
+        BlocProvider(create: (_) => NavigationBloc()),
       ],
       child: MaterialApp(
         title: 'Namer App',
@@ -43,15 +43,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     Widget currentPage;
 
-    return BlocBuilder<NavigationCubit, NavigationState>(
+    return BlocBuilder<NavigationBloc, NavigationState>(
+      buildWhen: (previous, current) =>
+          previous.runtimeType != current.runtimeType,
       builder: (context, state) {
-        switch (state.pageNumber) {
-          case GeneratorPageNavigation.number:
+        switch (state.page) {
+          case NavigationPage.generator:
             currentPage = const GeneratorPage();
-          case FavoritePageNavigation.number:
+          case NavigationPage.favorite:
             currentPage = const FavoritesPage();
-          default:
-            throw UnimplementedError('No widget for ${state.pageNumber}');
         }
 
         return LayoutBuilder(
@@ -72,9 +72,19 @@ class _MyHomePageState extends State<MyHomePage> {
                           label: Text('Favorites'),
                         ),
                       ],
-                      selectedIndex: state.pageNumber,
-                      onDestinationSelected: (value) =>
-                          context.read<NavigationCubit>().goToPage(value),
+                      onDestinationSelected: (value) {
+                        if (NavigationPage.generator.pageNumber == value) {
+                          context
+                              .read<NavigationBloc>()
+                              .add(const NavigateToGeneratorPage());
+                        }
+                        if (NavigationPage.favorite.pageNumber == value) {
+                          context
+                              .read<NavigationBloc>()
+                              .add(const NavigateToFavoritesPage());
+                        }
+                      },
+                      selectedIndex: state.page.pageNumber,
                     ),
                   ),
                   Expanded(
