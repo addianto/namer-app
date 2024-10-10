@@ -20,14 +20,25 @@ class FavoritesPage extends StatelessWidget {
               child: Text('You have ${state.favorites.length} favorites:'),
             ),
             ...state.favorites.map((e) => e.asString).map(
-                  (e) => ListTile(
-                    leading: const Icon(Icons.favorite),
-                    title: Text(e),
-                  ),
+                  (e) => FavoriteItem(item: e),
                 ),
           ],
         );
       },
+    );
+  }
+}
+
+class FavoriteItem extends StatelessWidget {
+  const FavoriteItem({required this.item, super.key });
+
+  final String item;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.favorite),
+      title: Text(item),
     );
   }
 }
