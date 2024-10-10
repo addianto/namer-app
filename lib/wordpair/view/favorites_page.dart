@@ -13,15 +13,26 @@ class FavoritesPage extends StatelessWidget {
           return const Center(child: Text('No favorites yet.'));
         }
 
-        return ListView(
+        return Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(24),
               child: Text('You have ${state.favorites.length} favorites:'),
             ),
-            ...state.favorites.map((e) => e.asString).map(
-                  (e) => FavoriteItem(item: e),
+            Expanded(
+              child: ListView.builder(
+                itemCount: state.favorites.length,
+                // TODO: Figure out how to push down the InkWell wrapper to be defined inside the FavoriteItem class
+                itemBuilder: (context, index) => InkWell(
+                  onTap: () => context
+                      .read<WordPairCubit>()
+                      .removeFromFavorites(state.favorites[index]),
+                  child: FavoriteItem(
+                    item: state.favorites[index].asString,
+                  ),
                 ),
+              ),
+            ),
           ],
         );
       },
@@ -30,7 +41,7 @@ class FavoritesPage extends StatelessWidget {
 }
 
 class FavoriteItem extends StatelessWidget {
-  const FavoriteItem({required this.item, super.key });
+  const FavoriteItem({required this.item, super.key});
 
   final String item;
 
