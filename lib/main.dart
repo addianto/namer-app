@@ -39,21 +39,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<NavigationRailDestination> _buildDestinations() {
+    return NavigationPage.values.map((page) {
+      switch (page) {
+        case NavigationPage.generator:
+          return const NavigationRailDestination(
+            icon: Icon(Icons.home),
+            label: Text('Home'),
+          );
+        case NavigationPage.favorite:
+          return const NavigationRailDestination(
+            icon: Icon(Icons.favorite),
+            label: Text('Favorites'),
+          );
+      }
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget currentPage;
-
     return BlocBuilder<NavigationBloc, NavigationState>(
       buildWhen: (previous, current) =>
           previous.runtimeType != current.runtimeType,
       builder: (context, state) {
-        switch (state.page) {
-          case NavigationPage.generator:
-            currentPage = const GeneratorPage();
-          case NavigationPage.favorite:
-            currentPage = const FavoritesPage();
-        }
-
         return LayoutBuilder(
           builder: (context, constraints) {
             return Scaffold(
@@ -62,26 +70,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   SafeArea(
                     child: NavigationRail(
                       extended: constraints.maxWidth >= 600,
-                      destinations: const [
-                        NavigationRailDestination(
-                          icon: Icon(Icons.home),
-                          label: Text('Home'),
-                        ),
-                        NavigationRailDestination(
-                          icon: Icon(Icons.favorite),
-                          label: Text('Favorites'),
-                        ),
-                      ],
+                      destinations: _buildDestinations(),
                       onDestinationSelected: (value) {
-                        if (NavigationPage.generator.pageNumber == value) {
-                          context
-                              .read<NavigationBloc>()
-                              .add(const NavigateToGeneratorPage());
-                        }
-                        if (NavigationPage.favorite.pageNumber == value) {
-                          context
-                              .read<NavigationBloc>()
-                              .add(const NavigateToFavoritesPage());
+                        final selectedPage = NavigationPage.values[value];
+                        switch (selectedPage) {
+                          case NavigationPage.generator:
+                            context
+                                .read<NavigationBloc>()
+                                .add(const NavigateToGeneratorPage());
+                          case NavigationPage.favorite:
+                            context
+                                .read<NavigationBloc>()
+                                .add(const NavigateToFavoritesPage());
                         }
                       },
                       selectedIndex: state.page.pageNumber,
@@ -90,7 +90,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   Expanded(
                     child: ColoredBox(
                       color: Theme.of(context).colorScheme.primaryContainer,
-                      child: currentPage,
+                      child: IndexedStack(
+                        index: state.page.pageNumber,
+                        children: const [
+                          GeneratorPage(),
+                          FavoritesPage(),
+                        ],
+                      ),
                     ),
                   ),
                 ],
