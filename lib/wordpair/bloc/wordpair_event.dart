@@ -4,8 +4,10 @@ part of 'wordpair_bloc.dart';
 sealed class WordPairEvent extends Equatable {
   const WordPairEvent();
 
+  // coverage:ignore-start
   @override
   List<Object> get props => [];
+  // coverage:ignore-end
 }
 
 class CreateNewPair extends WordPairEvent {
@@ -21,8 +23,10 @@ class RemoveFromFavorites extends WordPairEvent {
 
   final WordPair pair;
 
+  // coverage:ignore-start
   @override
   List<Object> get props => [pair];
+  // coverage:ignore-end
 }
 
 class ToggleFavorite extends WordPairEvent {

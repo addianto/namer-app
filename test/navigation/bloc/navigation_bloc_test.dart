@@ -19,6 +19,14 @@ void main() {
     });
 
     blocTest<NavigationBloc, NavigationState>(
+      'emits GeneratorPageNavigation when NavigateToGeneratorPage is added',
+      build: () => bloc,
+      act: (bloc) => bloc.add(const NavigateToGeneratorPage()),
+      expect: () => [isA<GeneratorPageNavigation>()],
+      verify: (bloc) => expect(bloc.state.page, NavigationPage.generator),
+    );
+
+    blocTest<NavigationBloc, NavigationState>(
       'emits FavoritePageNavigation when NavigateToFavoritesPage is added',
       build: () => bloc,
       act: (bloc) => bloc.add(const NavigateToFavoritesPage()),
