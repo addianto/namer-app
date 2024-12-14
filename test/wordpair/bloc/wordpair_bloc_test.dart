@@ -1,40 +1,40 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:namer_app/wordpair/cubit/wordpair_cubit.dart';
+import 'package:namer_app/wordpair/cubit/wordpair_bloc.dart';
 
 void main() {
-  group('WordPairCubit', () {
-    late WordPairCubit cubit;
+  group('WordPairBloc', () {
+    late WordPairBloc bloc;
 
     setUp(() {
-      cubit = WordPairCubit();
+      bloc = WordPairBloc();
     });
 
     tearDown(() {
-      cubit.close();
+      bloc.close();
     });
 
     test('initial state is WordPairInitial', () {
-      expect(cubit.state, isA<WordPairInitial>());
+      expect(bloc.state, isA<WordPairInitial>());
     });
 
-    blocTest<WordPairCubit, WordPairState>(
+    blocTest<WordPairBloc, WordPairState>(
       'emits WordPairUpdated with new pair when createNewPair is called',
-      build: () => cubit,
-      act: (bloc) => bloc.createNewPair(),
+      build: () => bloc,
+      act: (bloc) => bloc.add(const CreateNewPair()),
       expect: () => [isA<WordPairUpdated>()],
-      verify: (bloc) => expect(cubit.state.current, isA<WordPair>()),
+      verify: (bloc) => expect(bloc.state.current, isA<WordPair>()),
     );
 
-    blocTest<WordPairCubit, WordPairState>(
+    blocTest<WordPairBloc, WordPairState>(
       'emits WordPairUpdated with added favorite when addToFavorites is called',
-      build: () => cubit,
+      build: () => bloc,
       seed: () => WordPairUpdated(
         current: WordPair('foo', 'bar'),
         favorites: const [],
       ),
-      act: (bloc) => cubit.addToFavorites(),
+      act: (bloc) => bloc.add(const AddToFavorites()),
       expect: () => [
         WordPairUpdated(
           current: WordPair('foo', 'bar'),
@@ -42,20 +42,21 @@ void main() {
         ),
       ],
       verify: (bloc) =>
-          expect(cubit.state.favorites, contains(cubit.state.current)),
+          expect(bloc.state.favorites, contains(bloc.state.current)),
     );
 
-    blocTest<WordPairCubit, WordPairState>(
+    blocTest<WordPairBloc, WordPairState>(
       '''
       emits WordPairUpdated with removed favorites 
       when removeFromFavorites is called
       ''',
-      build: () => cubit,
+      build: () => bloc,
       seed: () => WordPairUpdated(
         current: WordPair('foo', 'bar'),
         favorites: [WordPair('foo', 'bar')],
       ),
-      act: (bloc) => cubit.removeFromFavorites(WordPair('foo', 'bar')),
+      act: (bloc) =>
+          bloc.add(RemoveFromFavorites(pair: WordPair('foo', 'bar'))),
       expect: () => [
         WordPairUpdated(
           current: WordPair('foo', 'bar'),
@@ -63,23 +64,23 @@ void main() {
         ),
       ],
       verify: (bloc) => expect(
-        cubit.state.favorites,
+        bloc.state.favorites,
         isNot(contains(WordPair('foo', 'bar'))),
       ),
     );
 
-    blocTest<WordPairCubit, WordPairState>(
+    blocTest<WordPairBloc, WordPairState>(
       '''
       given one favorite exists in the favorites
       when toggleFavorite is called
       then favorites become empty
       ''',
-      build: () => cubit,
+      build: () => bloc,
       seed: () => WordPairUpdated(
         current: WordPair('foo', 'bar'),
         favorites: [WordPair('foo', 'bar')],
       ),
-      act: (bloc) => cubit.toggleFavorite(),
+      act: (bloc) => bloc.add(const ToggleFavorite()),
       expect: () => [
         WordPairUpdated(
           current: WordPair('foo', 'bar'),
@@ -88,18 +89,18 @@ void main() {
       ],
     );
 
-    blocTest<WordPairCubit, WordPairState>(
+    blocTest<WordPairBloc, WordPairState>(
       '''
       given no favorite exists in the favorites
       when toggleFavorite is called
       then favorites contain one favorite
       ''',
-      build: () => cubit,
+      build: () => bloc,
       seed: () => WordPairUpdated(
         current: WordPair('foo', 'bar'),
         favorites: const [],
       ),
-      act: (bloc) => cubit.toggleFavorite(),
+      act: (bloc) => bloc.add(const ToggleFavorite()),
       expect: () => [
         WordPairUpdated(
           current: WordPair('foo', 'bar'),

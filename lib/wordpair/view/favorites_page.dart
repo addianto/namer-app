@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:namer_app/wordpair/cubit/wordpair_cubit.dart';
+import 'package:namer_app/wordpair/cubit/wordpair_bloc.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WordPairCubit, WordPairState>(
+    return BlocBuilder<WordPairBloc, WordPairState>(
       builder: (context, state) {
         if (state.favorites.isEmpty) {
           return const Center(child: Text('No favorites yet.'));
@@ -26,8 +26,8 @@ class FavoritesPage extends StatelessWidget {
                 // wrapper to be defined inside the FavoriteItem class
                 itemBuilder: (context, index) => InkWell(
                   onTap: () => context
-                      .read<WordPairCubit>()
-                      .removeFromFavorites(state.favorites[index]),
+                      .read<WordPairBloc>()
+                      .add(RemoveFromFavorites(pair: state.favorites[index])),
                   child: FavoriteItem(
                     item: state.favorites[index].asString,
                   ),

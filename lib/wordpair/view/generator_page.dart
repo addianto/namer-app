@@ -39,7 +39,7 @@ class GeneratorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WordPairCubit, WordPairState>(
+    return BlocBuilder<WordPairBloc, WordPairState>(
       builder: (context, state) {
         final pair = state.current;
         final icon = state.favorites.contains(pair)
@@ -56,13 +56,16 @@ class GeneratorPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ElevatedButton.icon(
-                    onPressed: context.read<WordPairCubit>().toggleFavorite,
+                    onPressed: () => context
+                        .read<WordPairBloc>()
+                        .add(const ToggleFavorite()),
                     label: const Text('Like'),
                     icon: icon,
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: context.read<WordPairCubit>().createNewPair,
+                    onPressed: () =>
+                        context.read<WordPairBloc>().add(const CreateNewPair()),
                     child: const Text('Next'),
                   ),
                 ],
