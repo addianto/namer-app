@@ -1,4 +1,4 @@
-part of 'wordpair_cubit.dart';
+part of 'wordpair_bloc.dart';
 
 @immutable
 sealed class WordPairState extends Equatable {

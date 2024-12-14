@@ -1,1 +1,1 @@
-export 'cubit/navigation_cubit.dart';
+export 'bloc/navigation_bloc.dart';
