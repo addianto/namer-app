@@ -1,2 +1,2 @@
-export 'cubit/wordpair_bloc.dart';
+export 'bloc/wordpair_bloc.dart';
 export 'view/view.dart';
