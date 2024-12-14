@@ -1,6 +1,6 @@
+import 'package:another_namer_app/navigation/navigation.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:namer_app/navigation/navigation.dart';
 
 void main() {
   group('NavigationBloc', () {

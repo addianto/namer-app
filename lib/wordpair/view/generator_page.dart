@@ -1,7 +1,7 @@
+import 'package:another_namer_app/wordpair/wordpair.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:namer_app/wordpair/wordpair.dart';
 
 class BigCard extends StatelessWidget {
   const BigCard({

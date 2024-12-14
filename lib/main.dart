@@ -1,8 +1,8 @@
+import 'package:another_namer_app/namer_observer.dart';
+import 'package:another_namer_app/navigation/navigation.dart';
+import 'package:another_namer_app/wordpair/wordpair.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:namer_app/namer_observer.dart';
-import 'package:namer_app/navigation/navigation.dart';
-import 'package:namer_app/wordpair/wordpair.dart';
 
 void main() {
   Bloc.observer = const NamerObserver();

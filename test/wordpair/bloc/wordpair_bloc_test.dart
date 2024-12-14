@@ -1,7 +1,7 @@
+import 'package:another_namer_app/wordpair/bloc/wordpair_bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:namer_app/wordpair/bloc/wordpair_bloc.dart';
 
 void main() {
   group('WordPairBloc', () {

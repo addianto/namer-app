@@ -1,4 +1,4 @@
-package com.example.namer_app
+package to.adian.another_namer_app
 
 import io.flutter.embedding.android.FlutterActivity
 

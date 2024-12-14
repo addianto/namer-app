@@ -1,6 +1,6 @@
+import 'package:another_namer_app/wordpair/bloc/wordpair_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:namer_app/wordpair/bloc/wordpair_bloc.dart';
 
 class FavoritesPage extends StatelessWidget {
   const FavoritesPage({super.key});
