@@ -4,7 +4,7 @@ name: Release
 on:
   push:
     branches:
-      - main
+      - chore/release
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -29,7 +29,7 @@ jobs:
         uses: actions/setup-java@v4.5.0
         with:
           distribution: "temurin"
-          java-version: "21"
+          java-version: "21.0"
           cache: "gradle"
           cache-dependency-path: |
             android/*.gradle*
